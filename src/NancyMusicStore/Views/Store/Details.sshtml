@@ -1,0 +1,48 @@
+﻿@Master['_Layout']
+
+@Section['Content'] 
+<h2>@Model.Title</h2>
+
+<p>
+    <img alt="@Model.Title" src="@Model.AlbumArtUrl" />
+</p>
+
+<div id="album-details">
+    <p>
+        <em>Genre:</em>
+        @Model.GenreName
+    </p>
+    <p>
+        <em>Artist:</em>
+        @Model.ArtistName
+    </p>
+    <p>
+        <em>Price:</em>
+        @Model.Price
+    </p>
+    <p class="button">
+        <a href="#" data-id="@Model.AlbumId" id="add">Add to cart</a>        
+    </p>
+</div>
+@EndSection
+@Section['scripts']
+  <script type="text/javascript">
+        $(function () {
+             var recordToDelete = $(this).attr("data-id");
+            $('#add').click(function(){
+                 $.post("/ShoppingCart/AddToCart/"+$(this).attr("data-id"),
+                        function (result) {
+                             $("#cart-status").text('Cart (' + result.count + ')');
+                           $.iGrowl({
+                            type: 'notice',
+                            message: 'The item has been added to your cart',
+                            icon: 'vicons-cart',
+                            placement : {
+                            x: 	'center'
+                            }
+                            })	
+                        });
+            });
+        });
+    </script>
+@EndSection
